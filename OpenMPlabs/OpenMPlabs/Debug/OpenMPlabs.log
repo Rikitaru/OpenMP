@@ -1,0 +1,4 @@
+﻿  Source.cpp
+F:\Yandex.DiSK\YandexDisk\Fleshka (1)\ГУАП\8 семестр\Паралельное программирование\OpenMP\OpenMPlabs\OpenMPlabs\Source.cpp(150,10): warning C4101: 'k': unreferenced local variable
+F:\Yandex.DiSK\YandexDisk\Fleshka (1)\ГУАП\8 семестр\Паралельное программирование\OpenMP\OpenMPlabs\OpenMPlabs\Source.cpp(137): warning C4101: 'k': unreferenced local variable
+  OpenMPlabs.vcxproj -> F:\Yandex.DiSK\YandexDisk\Fleshka (1)\ГУАП\8 семестр\Паралельное программирование\OpenMP\OpenMPlabs\Debug\OpenMPlabs.exe

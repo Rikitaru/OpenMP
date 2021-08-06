@@ -1,0 +1,68 @@
+#include <omp.h>
+#include <time.h>
+#include <locale.h>
+#include <iostream>
+using namespace std;
+constexpr auto N = 7;
+int main(int argc, char* argv[])
+{
+	setlocale(0, "");
+	short A[N], B[N];
+	int i, n;
+	/*Рандом*/
+	cout << "A:";
+	for (i = 0; i < N; i++) {
+		A[i] = rand() % 10;
+		cout << " " << A[i];
+	}
+	cout << endl;
+	/*вывод в двоичной СС*/
+	for (int j = 0; j < N; j++) {
+		for (i = sizeof(A[j]) * 8 - 1; i >= 0; --i)
+		{
+			cout << (int)((A[j] >> i) & 1);
+		}
+		cout << " " << endl;
+	}
+	cout << endl;
+	/*Рандом + смещение*/
+	cout << "B:";
+	for (i = 0; i < N; i++) {
+		B[i] = rand() % 10 + (i % 10);
+		cout << " " << B[i];
+	}
+	cout << endl;
+	/*вывод в двоичной СС*/
+	for (int j = 0; j < N; j++) {
+		for (i = sizeof(B[j]) * 8 - 1; i >= 0; --i)
+		{
+			cout << (int)((B[j] >> i) & 1);
+		}
+		cout << " " << endl;
+	}
+	cout << endl;
+	//паралельная область, общие данные A B C индивидуальные данные i and n
+	omp_set_num_threads(5);
+#pragma omp parallel shared(A) private(i, n)
+	{
+		/* Получим номер текущей нити */
+		n = omp_get_thread_num();// у каждой нити он свой
+			if (n <= 1)
+#pragma omp for //этот фор автоматически раздели все иттерации между всем нитями
+			for (i = 0; i < N; i++)
+			{
+				n = omp_get_thread_num();// у каждой нити он свой
+				/*По заданию не сказано кол-во массивов. Случай если 1. Ответ всегда 0, так как XOR самого себя - это обуление*/
+				//A[i] ^= A[i];
+				//A[i] = ~(A[i] & A[i]) & (A[i] | A[i]);
+				//printf("Нить %d использовала элемент А[%d]\n", n, i);
+				/*По заданию не сказано кол-во массивов. Случай если 2.*/
+				A[i] = A[i] ^ B[i];
+				//A[i] = ~(A[i] & B[i]) & (A[i] | B[i]);
+				printf("Нить %d использовала элемент А[%d] и элемент B[%d]\n", n, i, i);
+			}
+		
+	}
+	cout << "A:";
+	for (i = 0; i < N; i++) { cout << " " << A[i]; }
+}
